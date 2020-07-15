@@ -1,26 +1,5 @@
-import { ICustomer } from './ICustomer';
-import { IBranch } from './IBranch';
-import { IService } from './IService';
-import { IResource } from './IResource';
+import { IAppointment } from './IAppointment';
 
-export interface FullAppointment {
+export interface FullAppointment extends IAppointment{
   qpId?: number,
-  id?: number,
-  publicId?: string;
-  status?: number;
-  created?: number;
-  updated?: number;
-  start?: string;
-  numberOfCustomers?: number;
-  custom?: string;
-  customers?: ICustomer[];
-  branch?: IBranch;
-  services?: IService[];
-  title?: string;
-  notes?: string;
-  allDay?: boolean;
-  blocking?: boolean;
-  end?: string;
-  resource?: IResource;
-  deleted?: boolean;
 }

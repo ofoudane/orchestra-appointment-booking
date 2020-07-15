@@ -8,7 +8,7 @@ import { NavigationService } from './../../../util/navigation.service';
 import { IAppointment } from './../../../../models/IAppointment';
 import { ICustomer } from './../../../../models/ICustomer';
 import { UserSelectors, SettingsAdminSelectors, SystemInfoSelectors } from '../../../../store/index';
-import { PrintSelectors } from '../../../../store/services/print/index';
+import { PrintSelectors, PrintDispatchers } from '../../../../store/services/print/index';
 import { BOOKING_HOME_URL } from '../../containers/qm-page-header/header-navigation';
 import { FullAppointment } from '../../../../models/FullAppointment';
 
@@ -36,6 +36,7 @@ export class QmPrintConfirmComponent implements OnInit, OnDestroy {
     private userSelectors: UserSelectors,
     private settingsMapSelectors: SettingsAdminSelectors,
     private printSelectors: PrintSelectors,
+    private printDispatchers: PrintDispatchers,
     private systemInfoSelectors: SystemInfoSelectors
     ) {
       this.userDirection$ = this.userSelectors.userDirection$;
@@ -45,12 +46,22 @@ export class QmPrintConfirmComponent implements OnInit, OnDestroy {
     }
 
   ngOnInit() {
-
     const printAppointmentSubscription = this.printedAppointment$.subscribe((bapp : FullAppointment) => {
-      this.bookedAppointment = bapp;
+      
+      if(bapp != null){
+        if(bapp.qpId || !this.bookedAppointment)
+          this.bookedAppointment = bapp;
+      }
+
       if (bapp && bapp.customers && bapp.customers.length > 0) {
         this.currentCustomer = bapp.customers[0];
       }  
+      if(bapp && !bapp.qpId){
+        // Make sure to delete this key, otherwise, you will run into an infinite loop.
+        delete bapp.qpId;
+        // Sometimes the qpId is not returned from the first request to the server. Therefore, a retry is required.
+        this.printDispatchers.setPrintedAppointment(bapp);
+      }
     });
 
     const timeConventionSubscription = this.timeConvention$.subscribe(

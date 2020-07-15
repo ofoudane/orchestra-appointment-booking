@@ -13,7 +13,7 @@ This document describes the new features, bug corrections, known issues and reco
 
 **Date:** 15/07/2020
  
-**Build number:** 009
+**Build number:** 013
 
 
 <h3>Stories</h3>

@@ -1,9 +1,7 @@
-import { AllPrintActions } from './../../actions/print.actions';
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
 
 import { IAppState } from '../../reducers';
-import * as AppointmentMetaActions from '../../actions';
 import { IAppointment } from '../../../models/IAppointment';
 import * as Actions from '../../actions';
 

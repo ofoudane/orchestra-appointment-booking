@@ -57,6 +57,7 @@ export class ResetAppointment implements Action {
   readonly type = RESET_APPOINTMENT;
 }
 
+
 // Action types
 export type AllAppointmentActions = FetchAppointments |
                                     FetchAppointmentsFail |
@@ -66,4 +67,4 @@ export type AllAppointmentActions = FetchAppointments |
                                     DeleteAppointmentFail |
                                     DeleteAppointmentSuccess |
                                     SelectAppointment |
-                                    ResetAppointment;
+                                    ResetAppointment ;

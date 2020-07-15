@@ -10,6 +10,8 @@ Or view this helpful tutorial to get some insight to working with ngrx and also 
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.7.3.
 
+## Warning:
+This is a custom version of Appointment Booking delivered for Jira request GP-2829. In this version, the appointment internal booking ID is displayed in appointment confirmation page.
 
 ## Getting Started
 

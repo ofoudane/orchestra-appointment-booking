@@ -40,13 +40,13 @@ export class AppointmentEffects {
   getAppointments$: Observable<Action> = this.actions$
     .ofType(AppointmentActions.FETCH_APPOINTMENTS)
     .pipe(
-    switchMap((action: AppointmentActions.FetchAppointments) =>
-      toAction(
-        this.appointmentDataService.getAppointments(action.payload),
-        AppointmentActions.FetchAppointmentsSuccess,
-        AppointmentActions.FetchAppointmentsFail
+      switchMap((action: AppointmentActions.FetchAppointments) =>
+        toAction(
+          this.appointmentDataService.getAppointments(action.payload),
+          AppointmentActions.FetchAppointmentsSuccess,
+          AppointmentActions.FetchAppointmentsFail
+        )
       )
-    )
     );
 
   @Effect()
@@ -67,7 +67,7 @@ export class AppointmentEffects {
     .pipe(
       withLatestFrom(this.store$.select((state: IAppState) => state.appointments)),
       tap((data: any) => {
-        const [ action, state ]: [AppointmentActions.DeleteAppointment, IAppointmentState] = data;
+        const [action, state]: [AppointmentActions.DeleteAppointment, IAppointmentState] = data;
         if (state.selectedAppointment === null) {
           this.translateService.get('toast.cancel.booking.success',
             {
@@ -75,11 +75,11 @@ export class AppointmentEffects {
               date: moment(action.payload.start).format('DD MMM YYYY')
             }).subscribe(
               (label: string) => this.toastService.htmlSuccessToast(`<span dir="auto">${label}</span>`)
-          ).unsubscribe();
+            ).unsubscribe();
         }
       }),
       switchMap((data: any) => {
-        const [ action, state ]: [AppointmentActions.DeleteAppointment, IAppointmentState] = data;
+        const [action, state]: [AppointmentActions.DeleteAppointment, IAppointmentState] = data;
         // If reschedule reset appointment
         const resetActions = state.selectedAppointment ? [new CustomerActions.ResetAppointment] : [];
         return [
@@ -94,10 +94,10 @@ export class AppointmentEffects {
   deleteAppointmentFailed$: Observable<Action> = this.actions$
     .ofType(AppointmentActions.DELETE_APPOINTMENT_FAIL)
     .pipe(
-    tap((action: AppointmentActions.DeleteAppointmentFail) => {
-      this.errorHandler
-      .showError('toast.cancel.booking.error', action.payload);
-    }));
+      tap((action: AppointmentActions.DeleteAppointmentFail) => {
+        this.errorHandler
+          .showError('toast.cancel.booking.error', action.payload);
+      }));
 
 
   @Effect()
@@ -106,7 +106,7 @@ export class AppointmentEffects {
     .pipe(
       withLatestFrom(this.store$.select((state: IAppState) => state)),
       switchMap((data: any) => {
-        const [ action, state ]: [AppointmentActions.SelectAppointment, IAppState] = data;
+        const [action, state]: [AppointmentActions.SelectAppointment, IAppState] = data;
         const appointmentToLoad: IAppointment = action.payload;
         const settingsMap = this.appUtils.getSettingsAsMap(state.settings.settings);
         const selectAppointmentActions = this.getSelectAppointmentActions(state, settingsMap, appointmentToLoad);
@@ -127,12 +127,12 @@ export class AppointmentEffects {
     if (isValid === true) {
       const appointmentMetaActions = this.getAppointmentMetaActions(appointment, settingsMap);
       const customerAction = state.customers.currentCustomer !== null
-              ? [] : [new AppointmentActions.SelectCustomer(appointment.customers[0])];
+        ? [] : [new AppointmentActions.SelectCustomer(appointment.customers[0])];
       return [
-          ...customerAction,
-          new AppointmentActions.LoadSelectedServices(appointment.services),
-          new AppointmentActions.LoadSelectedBranch(appointment.branch),
-          ...appointmentMetaActions
+        ...customerAction,
+        new AppointmentActions.LoadSelectedServices(appointment.services),
+        new AppointmentActions.LoadSelectedBranch(appointment.branch),
+        ...appointmentMetaActions
       ];
     } else {
       this.translateService.get('label.select.appointment.error').pipe(take(1)).subscribe(
@@ -184,8 +184,8 @@ export class AppointmentEffects {
 
   getNofificationTypeFromSettings(settingsMap: { [name: string]: Setting }): string {
     if (settingsMap.OptionPreselect.value !== 'PreSelectNoOption'
-    && settingsMap.OptionPreselect.value !== 'unavailable'
-    && settingsMap.OptionPreselect.value !== 'NoOption' ) {
+      && settingsMap.OptionPreselect.value !== 'unavailable'
+      && settingsMap.OptionPreselect.value !== 'NoOption') {
       return settingsMap.OptionPreselect.value;
     } else {
       return '';
@@ -231,7 +231,7 @@ export class AppointmentEffects {
 
   validateAppointment(
     state: IAppState,
-    settingsMap: {[name: string]: Setting},
+    settingsMap: { [name: string]: Setting },
     appointment: IAppointment
   ): boolean {
     const isValid = this.canLoadAppointment(state, settingsMap, appointment.services, appointment.branch);
@@ -288,7 +288,7 @@ export class AppointmentEffects {
 
   canLoadAppointment(
     state: IAppState,
-    settingsMap: { [name: string]: Setting},
+    settingsMap: { [name: string]: Setting },
     servicesToCheck: IService[],
     branchToCheck: IBranch
   ): boolean {

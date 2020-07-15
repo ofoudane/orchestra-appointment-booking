@@ -16,6 +16,7 @@ import { ReserveEffects } from './reserve.effects';
 import { AccountEffects } from './account.effects';
 import { BookingEffects } from './booking.effects';
 import { AppointmentMetaEffects } from './appointment-meta.effects';
+import { PrintEffects } from './print.effects';
 
 export const effects: any[] = [
   AppointmentEffects,
@@ -35,7 +36,8 @@ export const effects: any[] = [
   BookingEffects,
   CalendarSettingsEffects,
   AppointmentMetaEffects,
-  ShiroEffects
+  ShiroEffects,
+  PrintEffects
 ];
 
 export * from './service.effects';

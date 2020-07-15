@@ -17,11 +17,11 @@
                   <a href="#" class="qm-customer-card__name" [innerText]="currentCustomer?.name"></a>
                 </h1>
                 <ul class="qm-customer-card__list">
-                  <li class="qm-customer-card__list-item" *ngIf="phoneEnabled && currentCustomer?.phone.length > 0">
+                  <li class="qm-customer-card__list-item" *ngIf="phoneEnabled && currentCustomer?.phone?.length > 0">
                     <i class="icon-phone qm-customer-card__list-item-icon" aria-hidden="true"></i>
                     <span class="qm-customer-card__list-item-text" [innerText]="currentCustomer?.phone"></span>
                   </li>
-                  <li class="qm-customer-card__list-item" *ngIf="emailEnabled && currentCustomer?.email.length > 0">
+                  <li class="qm-customer-card__list-item" *ngIf="emailEnabled && currentCustomer?.email?.length > 0">
                     <i class="icon-mail qm-customer-card__list-item-icon" aria-hidden="true"></i>
                     <span class="qm-customer-card__list-item-text" [innerText]="currentCustomer?.email"></span>
                   </li>
@@ -33,12 +33,16 @@
               <table class="qm-print__table">
                 <caption>{{'label.print.appointment.overview' | translate}}:</caption>
                 <tr>
+                  <th scope="row">{{'label.print.appointment.id' | translate}}</th>
+                  <td><b>{{ bookedAppointment?.qpId}}</b></td>
+                </tr>
+                <tr>
                   <th scope="row">{{'label.print.appointment.date' | translate}}</th>
                   <td>{{ bookedAppointment?.start | amDateFormat: 'dddd DD MMMM'}}</td>
                 </tr>
                 <tr>
                   <th scope="row">{{'label.print.appointment.time' | translate}}</th>
-                  <td>{{ bookedAppointment?.start | amTz: bookedAppointment.branch.fullTimeZone | amDateFormat:getTimeFormat() }} - {{ bookedAppointment?.end | amTz: bookedAppointment.branch.fullTimeZone | amDateFormat:getTimeFormat() }}
+                  <td>{{ bookedAppointment?.start | amTz: bookedAppointment?.branch?.fullTimeZone | amDateFormat:getTimeFormat() }} - {{ bookedAppointment?.end | amTz: bookedAppointment?.branch?.fullTimeZone | amDateFormat:getTimeFormat() }}
                   </td>
                 </tr>
                 <tr>
@@ -51,13 +55,13 @@
                   <td>
                     <ng-container *ngFor="let svc of bookedAppointment?.services; let i = index">
                       {{svc.name}}
-                      <br *ngIf='i !== (bookedAppointment?.services.length-1)' />
+                      <br *ngIf='i !== (bookedAppointment?.services?.length-1)' />
                     </ng-container>
                   </td>
                 </tr>
                 <tr>
                   <th scope="row">{{'label.print.appointment.branch' | translate}}</th>
-                  <td>{{ this.bookedAppointment?.branch.name}}</td>
+                  <td>{{ this.bookedAppointment?.branch?.name}}</td>
                 </tr>
                 <tr *ngIf="this.getBranchAddressText(this.bookedAppointment?.branch).length > 0">
                   <th scope="row">{{'label.print.appointment.address' | translate}}</th>
@@ -65,7 +69,7 @@
                 </tr>
                 <tr *ngIf="this.bookedAppointment?.resource.name.length > 0">
                   <th scope="row">{{'label.print.appointment.resource' | translate}}</th>
-                  <td>{{ this.bookedAppointment?.resource.name}}</td>
+                  <td>{{ this.bookedAppointment?.resource?.name}}</td>
                 </tr>
               </table>
             </div>

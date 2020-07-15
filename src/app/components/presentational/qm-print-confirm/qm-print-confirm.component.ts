@@ -10,6 +10,7 @@ import { ICustomer } from './../../../../models/ICustomer';
 import { UserSelectors, SettingsAdminSelectors, SystemInfoSelectors } from '../../../../store/index';
 import { PrintSelectors } from '../../../../store/services/print/index';
 import { BOOKING_HOME_URL } from '../../containers/qm-page-header/header-navigation';
+import { FullAppointment } from '../../../../models/FullAppointment';
 
 @Component({
   selector: 'qm-qm-print-confirm',
@@ -20,11 +21,11 @@ export class QmPrintConfirmComponent implements OnInit, OnDestroy {
 
   private subscriptions: Subscription = new Subscription();
   currentCustomer: ICustomer;
-  bookedAppointment: IAppointment;
+  bookedAppointment: FullAppointment;
   userDirection$: Observable<string>;
   private timeConvention$: Observable<string>;
   private timeConvention: string;
-  printedAppointment$: Observable<IAppointment>;
+  printedAppointment$: Observable<FullAppointment>;
   private settingsMap$: Observable<{ [name: string]: Setting }>;
   phoneEnabled = true;
   emailEnabled = true;
@@ -41,21 +42,21 @@ export class QmPrintConfirmComponent implements OnInit, OnDestroy {
       this.settingsMap$ = this.settingsMapSelectors.settingsAsMap$;
       this.printedAppointment$ = this.printSelectors.printedAppointment$;
       this.timeConvention$ = this.systemInfoSelectors.systemInfoTimeConvention$;
-  }
+    }
 
   ngOnInit() {
 
-    const printAppointmentSubscription = this.printedAppointment$.subscribe(bapp => {
+    const printAppointmentSubscription = this.printedAppointment$.subscribe((bapp : FullAppointment) => {
       this.bookedAppointment = bapp;
+      if (bapp && bapp.customers && bapp.customers.length > 0) {
+        this.currentCustomer = bapp.customers[0];
+      }  
     });
 
     const timeConventionSubscription = this.timeConvention$.subscribe(
       timeConvention => this.timeConvention = timeConvention
     );
 
-    if (this.bookedAppointment && this.bookedAppointment.customers && this.bookedAppointment.customers.length > 0) {
-      this.currentCustomer = this.bookedAppointment.customers[0];
-    }
 
     const settingsSubscription = this.settingsMap$.subscribe(
       (settingsMap: { [name: string]: Setting }) => {
